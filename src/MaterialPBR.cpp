@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "ShaderLib.h"
 
+using namespace glt;
+
 void MaterialPBR::init()
 {
   auto shaderPtr = m_shaderLib->getCurrentShader();

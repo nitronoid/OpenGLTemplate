@@ -1,31 +1,30 @@
-#include "DemoScene.h"
+#include "ViewerScene.h"
 #include "MaterialWireframe.h"
 #include "MaterialPBR.h"
 #include "MaterialPhong.h"
-#include "MaterialFractal.h"
-#include "MaterialEnvMap.h"
-#include "MaterialBump.h"
 #include <QOpenGLContext>
 
+using namespace glt;
+
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::writeMeshAttributes()
+void ViewerScene::writeMeshAttributes()
 {
   const auto& mesh = m_meshes[m_meshIndex];
 
-  using namespace MeshAttributes;
+  using namespace MeshAttribute;
   for (const auto buff : {VERTEX, UV, NORMAL})
   {
-    m_meshVBO.write(mesh.getAttribData(buff), buff);
+    m_meshVBO.write(mesh.getAttribData(buff), buff, mesh.getNAttribData(buff));
   }
-  m_meshVBO.setIndices(mesh.getIndicesData());
+  m_meshVBO.writeIndices(mesh.getIndicesData(), mesh.getNIndicesData());
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::setAttributeBuffers()
+void ViewerScene::setAttributeBuffers()
 {
   static constexpr int tupleSize[] = {3,2,3};
   auto prog = m_shaderLib->getCurrentShader();
 
-  using namespace MeshAttributes;
+  using namespace MeshAttribute;
   for (const auto buff : {VERTEX, UV, NORMAL})
   {
     prog->enableAttributeArray(buff);
@@ -34,7 +33,7 @@ void DemoScene::setAttributeBuffers()
 
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::init()
+void ViewerScene::init()
 {
   Scene::init();
 
@@ -49,7 +48,7 @@ void DemoScene::init()
   }
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::initGeo()
+void ViewerScene::initGeo()
 {
   m_meshes[0].load("models/cube.obj");
   m_meshes[1].load("models/plane.obj");
@@ -65,24 +64,21 @@ void DemoScene::initGeo()
   generateNewGeometry();
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::keyPress(QKeyEvent* io_event)
+void ViewerScene::keyPress(QKeyEvent* io_event)
 {
   makeCurrent();
   Scene::keyPress(io_event);
   m_materials[m_currentMaterial]->handleKey(io_event, context());
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::initMaterials()
+void ViewerScene::initMaterials()
 {
   m_materials.reserve(7);
 
-  m_materials.emplace_back(new MaterialBump(m_camera, m_shaderLib, &m_matrices));
-  m_materials.emplace_back(new MaterialEnvMap(m_camera, m_shaderLib, &m_matrices));
   m_materials.emplace_back(new MaterialPhong(m_camera, m_shaderLib, &m_matrices));
   m_materials.emplace_back(new MaterialPBR(m_camera, m_shaderLib, &m_matrices, {0.5f, 0.0f, 0.0f}, 1.0f, 1.0f, 0.5f, 1.0f));
   m_materials.emplace_back(new MaterialPBR(m_camera, m_shaderLib, &m_matrices, {0.1f, 0.2f, 0.5f}, 0.5f, 1.0f, 0.4f, 0.2f));
   m_materials.emplace_back(new MaterialWireframe(m_camera, m_shaderLib, &m_matrices));
-  m_materials.emplace_back(new MaterialFractal(m_camera, m_shaderLib, &m_matrices));
 
 
   for (auto& mat : m_materials)
@@ -95,12 +91,12 @@ void DemoScene::initMaterials()
   m_materials[m_currentMaterial]->apply();
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::rotating( const bool _rotating )
+void ViewerScene::rotating( const bool _rotating )
 {
   m_rotating = _rotating;
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::generateNewGeometry()
+void ViewerScene::generateNewGeometry()
 {
   makeCurrent();
   m_meshIndex = (m_meshIndex + 1) % m_meshes.size();
@@ -117,7 +113,7 @@ void DemoScene::generateNewGeometry()
   setAttributeBuffers();
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::nextMaterial()
+void ViewerScene::nextMaterial()
 {
   makeCurrent();
   m_currentMaterial = (m_currentMaterial + 1) % m_materials.size();
@@ -126,7 +122,7 @@ void DemoScene::nextMaterial()
   setAttributeBuffers();
 }
 //-----------------------------------------------------------------------------------------------------
-void DemoScene::renderScene()
+void ViewerScene::renderScene()
 {
   Scene::renderScene();
 

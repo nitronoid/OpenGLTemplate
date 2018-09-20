@@ -16,6 +16,9 @@
 #include <memory>
 #include "CameraStates.h"
 
+namespace glt
+{
+
 /**
  * @brief The TrackballCamera class
  */
@@ -151,5 +154,7 @@ private:
   float m_lastPitch   = 0.0f;
 
 };
+
+}
 
 #endif // TRACKBALLCAMERA_H

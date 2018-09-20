@@ -4,12 +4,15 @@
 #include "Material.h"
 #include "vec3.hpp"
 
+namespace glt
+{
+
 class MaterialPBR : public Material
 {
 public:
   MaterialPBR(
-      const std::shared_ptr<Camera> &io_camera,
-      const std::shared_ptr<ShaderLib> &io_shaderLib,
+      std::shared_ptr<Camera> io_camera,
+      std::shared_ptr<ShaderLib> io_shaderLib,
       std::array<glm::mat4, 3>* io_matrices,
       const glm::vec3 &_albedo,
       const float _ao,
@@ -17,7 +20,7 @@ public:
       const float _roughness,
       const float _metallic
       ) :
-    Material(io_camera, io_shaderLib, io_matrices),
+    Material(std::move(io_camera), std::move(io_shaderLib), io_matrices),
     m_albedo(_albedo),
     m_ao(_ao),
     m_exposure(_exposure),
@@ -45,5 +48,7 @@ private:
   float m_metallic;
 
 };
+
+}
 
 #endif // MATERIALPBR_H

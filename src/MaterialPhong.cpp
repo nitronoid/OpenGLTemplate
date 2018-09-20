@@ -2,6 +2,8 @@
 #include "Scene.h"
 #include "ShaderLib.h"
 
+using namespace glt;
+
 void MaterialPhong::init()
 {
   update();

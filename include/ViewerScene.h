@@ -1,50 +1,52 @@
-#ifndef DEMOSCENE_H
-#define DEMOSCENE_H
+#ifndef VIEWERSCENE_H
+#define VIEWERSCENE_H
 
 #include "Scene.h"
 #include "MaterialPBR.h"
 #include "MaterialPhong.h"
 #include "ShaderLib.h"
 
+namespace glt
+{
 
-class DemoScene : public Scene
+class ViewerScene : public Scene
 {
   Q_OBJECT
 public:
   //-----------------------------------------------------------------------------------------------------
-  /// @brief Constructor for DemoScene.
+  /// @brief Constructor for ViewerScene.
   /// @param [io] io_camera the camera used to view the scene.
   /// @param [io] io_shaderLib the shader library to store and retrieve our shaders.
   /// @param [io] io_parent the parent window to create the GL context in.
   //-----------------------------------------------------------------------------------------------------
-  DemoScene(
-      const std::shared_ptr<Camera> &io_camera,
-      const std::shared_ptr<ShaderLib> &io_shaderLib,
+  ViewerScene(
+      std::shared_ptr<Camera> io_camera,
+      std::shared_ptr<ShaderLib> io_shaderLib,
       QWidget *_parent
-      ) :
-    Scene(io_camera, _parent),
-    m_shaderLib(io_shaderLib)
+      ) 
+    : Scene(std::move(io_camera), _parent)
+    , m_shaderLib(std::move(io_shaderLib))
   {}
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default copy constructor.
   //-----------------------------------------------------------------------------------------------------
-  DemoScene(const DemoScene&) = default;
+  ViewerScene(const ViewerScene&) = default;
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default copy assignment operator.
   //-----------------------------------------------------------------------------------------------------
-  DemoScene& operator=(const DemoScene&) = default;
+  ViewerScene& operator=(const ViewerScene&) = default;
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default move constructor.
   //-----------------------------------------------------------------------------------------------------
-  DemoScene(DemoScene&&) = default;
+  ViewerScene(ViewerScene&&) = default;
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default move assignment operator.
   //-----------------------------------------------------------------------------------------------------
-  DemoScene& operator=(DemoScene&&) = default;
+  ViewerScene& operator=(ViewerScene&&) = default;
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default destructor.
   //-----------------------------------------------------------------------------------------------------
-  ~DemoScene() override = default;
+  ~ViewerScene() override = default;
   //-----------------------------------------------------------------------------------------------------
   /// @brief Used to intialise the scene, must call the base class init.
   //-----------------------------------------------------------------------------------------------------
@@ -98,7 +100,7 @@ private:
   //-----------------------------------------------------------------------------------------------------
   /// @brief Holds our test meshes.
   //-----------------------------------------------------------------------------------------------------
-  std::array<Mesh, 6> m_meshes;
+  std::array<TriMesh, 6> m_meshes;
   //-----------------------------------------------------------------------------------------------------
   /// @brief Wraps up our OpenGL buffers and VAO.
   //-----------------------------------------------------------------------------------------------------
@@ -131,7 +133,8 @@ private:
   //-----------------------------------------------------------------------------------------------------
   bool m_rotating = false;
 
-
 };
 
-#endif // DEMOSCENE_H
+}
+
+#endif // VIEWERSCENE_H

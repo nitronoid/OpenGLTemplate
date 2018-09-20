@@ -3,13 +3,14 @@
 
 #include "Material.h"
 
-class Camera;
+namespace glt
+{
 
 class MaterialWireframe : public Material
 {
 public:
-  MaterialWireframe(const std::shared_ptr<Camera> &io_camera, const std::shared_ptr<ShaderLib> &io_shaderLib, std::array<glm::mat4, 3>* io_matrices) :
-    Material(io_camera, io_shaderLib, io_matrices)
+  MaterialWireframe(std::shared_ptr<Camera> io_camera, std::shared_ptr<ShaderLib> io_shaderLib, std::array<glm::mat4, 3>* io_matrices)
+    : Material(std::move(io_camera), std::move(io_shaderLib), io_matrices)
   {}
   MaterialWireframe(const MaterialWireframe&) = default;
   MaterialWireframe& operator=(const MaterialWireframe&) = default;
@@ -24,5 +25,7 @@ public:
   virtual const char* shaderFileName() const override;
 
 };
+
+}
 
 #endif // MATERIALWIREFRAME_H

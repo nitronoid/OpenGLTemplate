@@ -2,8 +2,11 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "DemoScene.h"
+#include "ViewerScene.h"
 #include "ui_mainwindow.h"
+
+namespace glt
+{
 
 class MainWindow : public QMainWindow
 {
@@ -58,5 +61,7 @@ private:
   std::shared_ptr<Scene> m_scene = nullptr;
 
 };
+
+}
 
 #endif // MAINWINDOW_H

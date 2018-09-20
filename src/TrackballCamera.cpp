@@ -3,6 +3,8 @@
 #include <gtc/constants.hpp>
 #include <cmath>
 
+using namespace glt;
+
 const TrackballCamera::statePtr TrackballCamera::m_states[] = {
   statePtr{new CameraZoom},
   statePtr{new CameraRotate},

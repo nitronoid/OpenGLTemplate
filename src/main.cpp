@@ -34,14 +34,16 @@ int main(int argc, char *argv[])
   QSurfaceFormat::setDefaultFormat(format);
   // make an instance of the QApplication
   QApplication app(argc, argv);
+
+  using namespace glt;
   // Create a new MainWindow
   MainWindow window;
   // Create a camera
-  std::shared_ptr<Camera> cam(new TrackballCamera);
+  auto cam = std::make_shared<TrackballCamera>();
   // Create a shader library
-  std::shared_ptr<ShaderLib> lib(new ShaderLib);
+  auto lib = std::make_shared<ShaderLib>();
   // Create a scene to place inside the window
-  std::shared_ptr<Scene> scene(new DemoScene(cam, lib, &window));
+  auto scene = std::make_shared<ViewerScene>(cam, lib, &window);
   // Initialise the window using our scene
   window.init(scene);
   // show it

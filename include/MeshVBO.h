@@ -6,14 +6,11 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include "TriMesh.h"
+#include <array>
 
-//-------------------------------------------------------------------------------------------------------
-/// @brief used to refer to a section of buffer data
-//-------------------------------------------------------------------------------------------------------
-namespace MeshAttributes
+namespace glt
 {
-enum Attribute { VERTEX, UV, NORMAL };
-}
 
 class MeshVBO
 {
@@ -23,7 +20,7 @@ public:
   //-----------------------------------------------------------------------------------------------------
   void init();
   //-----------------------------------------------------------------------------------------------------
-  /// @brief called to reset our buffers, removing data from them
+  /// @brief called to reset our buffer, removing data from them.
   /// @param [in] _indicesSize is the size in bytes of the data type used to store indices.
   /// @param [in] _nIndices is the amount of elements of _indicesSize bytes that we should allocate for,
   /// the indices in the Element Buffer Object.
@@ -44,11 +41,30 @@ public:
       const int _nNorm
       );
   //-----------------------------------------------------------------------------------------------------
+  /// @brief called to extend our buffer size
+  /// @param [in] _indicesSize is the size in bytes of the data type used to store indices.
+  /// @param [in] _nIndices is the amount of elements of _indicesSize bytes that we should allocate for,
+  /// the indices in the Element Buffer Object.
+  /// @param [in] _nVert is the amount of elements of _dataSize bytes that we should allocate for the,
+  /// vertices in the Vertex Buffer Object.
+  /// @param [in] _nNorm is the amount of elements of _dataSize bytes that we should allocate for the,
+  /// normals in the Vertex Buffer Object.
+  /// @param [in] _nUV is the amount of elements of _dataSize bytes that we should allocate for the,
+  /// UV's in the Vertex Buffer Object.
+  //-----------------------------------------------------------------------------------------------------
+  void extend(
+      const unsigned char _indicesSize,
+      const int _nIndices,
+      const int _nVert,
+      const int _nUV,
+      const int _nNorm
+      );
+  //-----------------------------------------------------------------------------------------------------
   /// @brief called to add new data into the specified section of the vertex buffer.
   /// @param [in] _address is a pointer to the data we want to store.
   /// @param [in] _section is the section of the buffer we should write our data to.
   //-----------------------------------------------------------------------------------------------------
-  void write(const void * _address, const MeshAttributes::Attribute _section);
+  void write(const void * _address, const MeshAttribute::ATTRIB _section, const int _amount, const int _offset = 0);
   //-----------------------------------------------------------------------------------------------------
   /// @brief called to get the size of each data element we are storing.
   /// @return the size of the data elements in our buffer
@@ -63,12 +79,12 @@ public:
   /// @brief called to get the amount of data elements we are storing for a specific section.
   /// @return the number of data elements in the _section of the buffer
   //-----------------------------------------------------------------------------------------------------
-  int dataAmount(const MeshAttributes::Attribute _section) const noexcept;
+  int dataAmount(const MeshAttribute::ATTRIB _section) const noexcept;
   //-----------------------------------------------------------------------------------------------------
   /// @brief called to get the offset in bytes of the specified section of data in our buffer.
   /// @return the offset in bytes of _section.
   //-----------------------------------------------------------------------------------------------------
-  int offset(const MeshAttributes::Attribute _section) const noexcept;
+  int offset(const MeshAttribute::ATTRIB _section) const noexcept;
   //-----------------------------------------------------------------------------------------------------
   /// @brief called to bind our buffers.
   //-----------------------------------------------------------------------------------------------------
@@ -77,7 +93,7 @@ public:
   /// @brief called to add new index data into the element buffer.
   /// @param [in] io_indices is a pointer to the index data.
   //-----------------------------------------------------------------------------------------------------
-  void setIndices(const void *_indices);
+  void writeIndices(const void *_indices, const int _amount, const int _offset = 0);
 
 private:
   //-----------------------------------------------------------------------------------------------------
@@ -111,5 +127,7 @@ private:
 
 
 };
+
+}
 
 #endif // MESHVBO_H

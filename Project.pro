@@ -2,9 +2,9 @@ TEMPLATE = app
 TARGET = Project
 
 UI_HEADERS_DIR = ui
+UI_DIR = ui
 OBJECTS_DIR = obj
 MOC_DIR = moc
-UI_DIR = ui
 
 QT += opengl core gui
 CONFIG += console c++14
@@ -27,46 +27,10 @@ INCLUDEPATH += \
     $$PWD/ui \
     $$PWD/shaders
 
-HEADERS += \
-    include/MainWindow.h \
-    include/Camera.h \
-    include/TrackballCamera.h \
-    include/CameraStates.h \
-    include/Material.h \
-    include/MaterialPBR.h \
-    include/Mesh.h \
-    include/Scene.h \
-    include/DemoScene.h \
-    include/MaterialPhong.h \
-    include/ShaderLib.h \
-    include/MeshVBO.h \
-    include/MaterialWireframe.h \
-    include/MaterialFractal.h \
-    include/MaterialEnvMap.h \
-    include/MaterialBump.h
-
-
-SOURCES += \
-    src/main.cpp \
-    src/MainWindow.cpp \
-    src/Camera.cpp \
-    src/TrackballCamera.cpp \
-    src/CameraStates.cpp \
-    src/Mesh.cpp \
-    src/Material.cpp \
-    src/MaterialPBR.cpp \
-    src/Scene.cpp \
-    src/DemoScene.cpp \
-    src/MaterialPhong.cpp \
-    src/ShaderLib.cpp \
-    src/MeshVBO.cpp \
-    src/MaterialWireframe.cpp \
-    src/MaterialFractal.cpp \
-    src/MaterialEnvMap.cpp \
-    src/MaterialBump.cpp
+HEADERS += $$files(include/*.h, true)
+SOURCES += $$files(src/*.cpp, true)
 
 OTHER_FILES += \
-    $$files(shaders/*, true) \
     $$files(shaderPrograms/*, true) \
     $$files(models/*, true)
 
@@ -77,9 +41,5 @@ linux:{
 }
 
 
-#DISTFILES +=
+DISTFILES += $$files(shaders/*, true)
 
-DISTFILES += \
-    shaders/WireframeGeometry.glsl \
-    shaders/WireframeVertex.glsl \
-    shaders/WireframeFragment.glsl

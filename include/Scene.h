@@ -1,7 +1,7 @@
 #ifndef SCENE_H_
 #define SCENE_H_
 
-#include "Mesh.h"
+#include "TriMesh.h"
 #include <gtc/matrix_transform.hpp>
 #include <ext.hpp>
 #include <glm.hpp>
@@ -13,11 +13,13 @@
 #include "MeshVBO.h"
 #include "Camera.h"
 
+namespace glt
+{
 
 //-------------------------------------------------------------------------------------------------------
 /// @brief Enum used to access matrices in a more readable way.
 //-------------------------------------------------------------------------------------------------------
-namespace SceneMatrices
+namespace SceneMatrices 
 {
 enum MATRIX { MODEL_VIEW, PROJECTION, NORMAL };
 }
@@ -31,7 +33,7 @@ public:
   /// @param [io] io_camera the camera used to view the scene.
   /// @param [io] io_parent the parent window to create the GL context in.
   //-----------------------------------------------------------------------------------------------------
-  Scene(const std::shared_ptr<Camera> &io_camera, QWidget *io_parent);
+  Scene(std::shared_ptr<Camera> io_camera, QWidget *io_parent);
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default copy constructor.
   //-----------------------------------------------------------------------------------------------------
@@ -103,5 +105,7 @@ protected:
   std::shared_ptr<Camera> m_camera;
 
 };
+
+}
 
 #endif //SCENE_H_

@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+using namespace glt;
 
 //-----------------------------------------------------------------------------------------------------
 void Camera::resize(const int _width, const int _height)

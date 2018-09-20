@@ -8,6 +8,11 @@
 #include "ShaderLib.h"
 #include "Camera.h"
 
+namespace glt
+{
+
+class Camera;
+
 class Material
 {
 public:
@@ -18,13 +23,13 @@ public:
   /// @param [io] io_matrices is a pointer to the scene matrices used for the vertex shader.
   //-----------------------------------------------------------------------------------------------------
   Material(
-      const std::shared_ptr<Camera> &io_camera,
-      const std::shared_ptr<ShaderLib> &io_shaderLib,
+      std::shared_ptr<Camera> io_camera,
+      std::shared_ptr<ShaderLib> io_shaderLib,
       std::array<glm::mat4, 3>* io_matrices
-      ) :
-    m_shaderLib(io_shaderLib),
-    m_matrices(io_matrices),
-    m_cam(io_camera)
+      )
+    : m_shaderLib(std::move(io_shaderLib))
+    , m_matrices (std::move(io_matrices))
+    , m_cam(io_camera)
   {}
   //-----------------------------------------------------------------------------------------------------
   /// @brief Default copy constructor.
@@ -87,5 +92,7 @@ protected:
   //-----------------------------------------------------------------------------------------------------
   std::shared_ptr<Camera> m_cam = nullptr;
 };
+
+}
 
 #endif // MATERIAL_H

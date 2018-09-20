@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 
+using namespace glt;
 
 void MainWindow::init(const std::shared_ptr<Scene> &io_scene)
 {

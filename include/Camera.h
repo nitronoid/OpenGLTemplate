@@ -17,6 +17,8 @@
 #include <chrono>
 #include <QMouseEvent>
 
+namespace glt
+{
 /**
  * @brief The Camera class
  */
@@ -172,5 +174,6 @@ protected:
   float m_farClippingPlane  = 100.0f;
 
 };
+}
 
 #endif // CAMERA_H

@@ -3,6 +3,7 @@
 #include <QMouseEvent>
 #include <QKeyEvent>
 
+using namespace glt;
 
 //-----------------------------------------------------------------------------------------------------
 void CameraState::resetPosition(Camera* const io_camera, const int _key, const bool _isPress)

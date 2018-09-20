@@ -3,6 +3,9 @@
 
 #include "vec2.hpp"
 
+namespace glt
+{
+
 class Camera;
 
 class CameraState
@@ -87,5 +90,6 @@ public:
   virtual void handleKey(Camera * const io_camera, const int _key, const bool _isPress) override;
 };
 
+}
 
 #endif // CAMERASTATES_H
