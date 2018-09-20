@@ -70,11 +70,11 @@ void ShaderLib::createShader(const std::string &_name, const std::array<QString,
   m_shaderPrograms[_name].reset(program);
 }
 
-namespace std
+namespace /*anonymous*/
 {
 
 template<class BidirIt, class Traits, class CharT, class UnaryFunction>
-std::basic_string<CharT> regex_replace(BidirIt _first, BidirIt _last, const std::basic_regex<CharT,Traits>& _re, UnaryFunction _f)
+std::basic_string<CharT> regex_replace_with_callback(BidirIt _first, BidirIt _last, const std::basic_regex<CharT,Traits>& _re, UnaryFunction _f)
 {
   std::basic_string<CharT> s;
 
@@ -109,12 +109,12 @@ std::basic_string<CharT> regex_replace(BidirIt _first, BidirIt _last, const std:
 }
 
 template<class Traits, class CharT, class UnaryFunction>
-std::string regex_replace(const std::string& s, const std::basic_regex<CharT,Traits>& re, UnaryFunction f)
+std::string regex_replace_with_callback(const std::string& s, const std::basic_regex<CharT,Traits>& re, UnaryFunction f)
 {
-  return regex_replace(s.cbegin(), s.cend(), re, f);
+  return regex_replace_with_callback(s.cbegin(), s.cend(), re, f);
 }
 
-} // namespace std
+} // namespace anonymous
 
 std::string ShaderLib::loadFileToString(const std::string &_path)
 {
@@ -131,13 +131,14 @@ std::string ShaderLib::loadFileToString(const std::string &_path)
 void ShaderLib::parseIncludes(std::string &io_shaderString)
 {
   std::regex matcher(R"(#{1}include\ +(\"|\<)[a-zA-Z][a-zA-Z0-9_\/]+\.(h|glsl)(\"|\>))");
-  io_shaderString = std::regex_replace(io_shaderString, matcher, [this](const std::smatch& _m)
-  {
-    auto str = _m.str();
-    auto begin = str.find('"') + 1;
-    auto end = str.find_last_of('"');
-    return loadFileToString(std::string(str.begin() + begin, str.begin() + end));
-  }
+  io_shaderString = regex_replace_with_callback(io_shaderString, matcher, 
+      [this](const std::smatch& _m)
+      {
+        auto str = _m.str();
+        auto begin = str.find('"') + 1;
+        auto end = str.find_last_of('"');
+        return loadFileToString(std::string(str.begin() + begin, str.begin() + end));
+      }
   );
 }
 
