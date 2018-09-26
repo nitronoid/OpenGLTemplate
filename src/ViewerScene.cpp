@@ -9,7 +9,7 @@ using namespace glt;
 //-----------------------------------------------------------------------------------------------------
 void ViewerScene::writeMeshAttributes()
 {
-  const auto& mesh = m_meshes[m_meshIndex];
+  auto&& mesh = m_meshes[m_meshIndex];
 
   using namespace MeshAttribute;
   for (const auto buff : {VERTEX, UV, NORMAL})
@@ -81,7 +81,7 @@ void ViewerScene::initMaterials()
   m_materials.emplace_back(new MaterialWireframe(m_camera, m_shaderLib, &m_matrices));
 
 
-  for (auto& mat : m_materials)
+  for (auto&& mat : m_materials)
   {
     auto name = m_shaderLib->loadShaderProg(mat->shaderFileName());
     mat->setShaderName(name);
@@ -100,7 +100,7 @@ void ViewerScene::generateNewGeometry()
 {
   makeCurrent();
   m_meshIndex = (m_meshIndex + 1) % m_meshes.size();
-  auto& mesh = m_meshes[m_meshIndex];
+  auto&& mesh = m_meshes[m_meshIndex];
   m_meshVBO.reset(
         sizeof(GLushort),
         mesh.getNIndicesData(),
