@@ -27,6 +27,10 @@ INCLUDEPATH += \
     $$PWD/ui \
     $$PWD/shaders
 
+DEPPATH = $$PWD/dep
+DEPS = $$system(ls $${DEPPATH})
+for(d, DEPS):INCLUDEPATH += $${DEPPATH}/$${d}/include
+
 HEADERS += $$files(include/*.h, true)
 SOURCES += $$files(src/*.cpp, true)
 

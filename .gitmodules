@@ -1,0 +1,3 @@
+[submodule "dep/oglplus"]
+	path = dep/oglplus
+	url = git@github.com:matus-chochlik/oglplus.git
